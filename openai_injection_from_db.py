@@ -1,9 +1,11 @@
 from langchain.memory import CassandraChatMessageHistory, ConversationBufferMemory
 from langchain.llms import OpenAI
-from langchain import LLMChain, PromptTemplate
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from template import template
 
 from connect_database import session, ASTRA_DB_KEYSPACE, OPENAI_API_KEY
-from template import template
+#from template import template
 message_history = CassandraChatMessageHistory(
     session_id="mysession",
     session=session,
@@ -19,13 +21,16 @@ cass_buffer_memory = ConversationBufferMemory(
 )
 
 prompt = PromptTemplate(
-    input_variables=["chat_history", "human_history"],
+    input_variables=["chat_history", "human_input"],
     template=template
 )
 
 llm = OpenAI(openai_api_key=OPENAI_API_KEY)
 llm_chain = LLMChain(
     llm=llm,
-    prompt="prompt",
+    prompt=prompt,
     memory=cass_buffer_memory
 )
+
+response = llm_chain.predict(human_input="start the game")
+print(response)

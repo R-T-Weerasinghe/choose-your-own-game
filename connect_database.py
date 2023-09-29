@@ -16,7 +16,7 @@ with open("choose_your_own_adventure-token.json") as f:
 CLIENT_ID = secrets["clientId"]
 CLIENT_SECRET = secrets["secret"]
 ASTRA_DB_KEYSPACE = "database"
-OPENAI_API_KEY = ""
+OPENAI_API_KEY = "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"
 
 auth_provider = PlainTextAuthProvider(CLIENT_ID, CLIENT_SECRET)
 cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
@@ -24,6 +24,7 @@ session = cluster.connect()
 
 row = session.execute("select release_version from system.local").one()
 if row:
-    print(row[0])
+    # print(row[0])
+    pass
 else:
     print("An error occurred.")
