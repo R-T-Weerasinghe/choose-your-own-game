@@ -5,7 +5,7 @@ from langchain.prompts import PromptTemplate
 from template import template
 
 from connect_database import session, ASTRA_DB_KEYSPACE, OPENAI_API_KEY
-#from template import template
+# from template import template
 message_history = CassandraChatMessageHistory(
     session_id="mysession",
     session=session,
@@ -31,6 +31,11 @@ llm_chain = LLMChain(
     prompt=prompt,
     memory=cass_buffer_memory
 )
+choice = "start"
+while True:
+    response = llm_chain.predict(human_input=choice)
+    print(response.strip())
+    if "The End." in response:
+        break
 
-response = llm_chain.predict(human_input="start the game")
 print(response)
